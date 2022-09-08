@@ -75,5 +75,50 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
+    string s;
+    cin >>s;
+    vi pin(10);
+    rep(i,10){
+        if(s[i] == '0') pin[i]=0;
+        else pin[i] = 1;
+    }
+    vvi rows{
+        {7},
+        {4},
+        {2,8},
+        {5},
+        {3,9},
+        {6},
+        {10}
+    };
+    if(pin[0] == 1){
+        cout << "No" <<endl;
+    }else{
+        rep(i,7){
+            bool first_exist=true;
+            rep(ii,rows[i].size()){
+                if(!pin[rows[i][ii]-1]) first_exist = false;
+            }
+            if(!first_exist) continue;
+            reps(k,i+2,7){
+                bool second_exist = true;
+                rep(kk, rows[k].size()) {
+                    if (!pin[rows[k][kk] - 1]) second_exist = false;
+                }
+                if(!second_exist) continue;
+                reps(j,i+1,k){
+                    bool mid_exist=false;
+                    rep(jj,rows[j].size()){
+                        if(pin[rows[j][jj]-1]) mid_exist = true;
+                    }
+                    if(!mid_exist){
+                        cout << "Yes" <<endl;
+                        return 0;
+                    }
+                }
+            }
+        }
+        cout << "No" << endl;
+    }
     return 0;
 }

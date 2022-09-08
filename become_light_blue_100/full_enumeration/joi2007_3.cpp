@@ -9,9 +9,9 @@ using namespace std;
 // clang-format off
 /* accelration */
 // 高速バイナリ生成
-// #pragma GCC target("avx")
-// #pragma GCC optimize("O3")
-// #pragma GCC optimize("unroll-loops")
+#pragma GCC target("avx")
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
 // cin cout の結びつけ解除, stdioと同期しない(入出力非同期化)
 // cとstdの入出力を混在させるとバグるので注意
 struct Fast {Fast() {std::cin.tie(0); ios::sync_with_stdio(false);}} fast;
@@ -75,5 +75,39 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
+    int n;
+    cin >> n;
+    vector<pii> po(n);
+    rep(i, n) { cin >> po[i].first >> po[i].second; }
+    sort(po.begin(), po.end());
+    // 2点を選ぶ
+    int ans = 0;
+    rep(i, n) {
+        reps(k, i + 1, n) {
+            // ベクトル1、２を産出
+            vector<pii> v_vecs(2);
+            v_vecs[0] =
+                mp(po[k].second - po[i].second, -(po[k].first - po[i].first));
+            v_vecs[1] =
+                mp(-(po[k].second - po[i].second), po[k].first - po[i].first);
+            // 候補の2点ずつを出す
+            vector<vector<pii>> cands_pos(2,vector<pii>(2));
+            rep(vv, 2) {
+                cands_pos[vv][0] = mp(po[i].first + v_vecs[vv].first,
+                                      po[i].second + v_vecs[vv].second);
+                cands_pos[vv][1] = mp(po[k].first + v_vecs[vv].first,
+                                      po[k].second + v_vecs[vv].second);
+            }
+            // 探す
+            rep(vv, 2) {
+                // あったら面積を記録
+                if (binary_search(po.begin(), po.end(), cands_pos[vv][0]) &&
+                    binary_search(po.begin(), po.end(), cands_pos[vv][1])) {
+                    ans = max(ans, v_vecs[vv].first * v_vecs[vv].first + v_vecs[vv].second * v_vecs[vv].second);
+                }
+            }
+        }
+    }
+    cout << ans <<endl;
     return 0;
 }

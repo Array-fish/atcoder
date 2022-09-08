@@ -5,7 +5,7 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
+// TODO: try !!!!!!!!!!!
 // clang-format off
 /* accelration */
 // 高速バイナリ生成
@@ -75,5 +75,34 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
+    int n = in_int();
+    vector<pii> sign(n);
+    rep(i, n) { cin >> sign[i].first >> sign[i].second; }
+    int m = in_int();
+    vector<pii> star(m);
+    rep(i, m) { cin >> star[i].first >> star[i].second; }
+    sort(sign.begin(), sign.end());
+    sort(star.begin(), star.end());
+    vector<pii> sign_vecs(n - 1);
+    rep(i, n - 1) {
+        sign_vecs[i] = mp(sign[i + 1].first - sign[0].first,
+                          sign[i + 1].second - sign[0].second);
+    }
+    rep(i, m) {
+        bool exi = true;
+        rep(k, n - 1) {
+            if (!binary_search(star.begin(), star.end(),
+                               mp(star[i].first + sign_vecs[k].first,
+                                  star[i].second + sign_vecs[k].second))) {
+                exi = false;
+                break;
+            }
+        }
+        if (exi) {
+            cout << star[i].first - sign[0].first << " "
+                 << star[i].second - sign[0].second << endl;
+            return 0;
+        }
+    }
     return 0;
 }

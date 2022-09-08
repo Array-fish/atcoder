@@ -14,19 +14,19 @@ using namespace std;
 // #pragma GCC optimize("unroll-loops")
 // cin cout の結びつけ解除, stdioと同期しない(入出力非同期化)
 // cとstdの入出力を混在させるとバグるので注意
-struct Fast {Fast() {std::cin.tie(0); ios::sync_with_stdio(false);}} fast;
+//struct Fast {Fast() {std::cin.tie(0); ios::sync_with_stdio(false);}} fast;
 
 /* alias */
-using ull = unsigned long long;
-using ll = long long;
-using vi = vector<int>;
-using vl = vector<long>;
-using vll = vector<long long>;
-using vvi = vector<vi>;
-using vvl = vector<vl>;
-using vvll = vector<vll>;
-using vs = vector<string>;
-using pii = pair<int, int>;
+// using ull = unsigned long long;
+// using ll = long long;
+// using vi = vector<int>;
+// using vl = vector<long>;
+// using vll = vector<long long>;
+// using vvi = vector<vi>;
+// using vvl = vector<vl>;
+// using vvll = vector<vll>;
+// using vs = vector<string>;
+// using pii = pair<int, int>;
 
 /* define short */
 #define pb push_back
@@ -48,9 +48,9 @@ using pii = pair<int, int>;
 #define debug(x) cerr << "\033[33m(line:" << __LINE__ << ") " << #x << ": " << x << "\033[m" << endl;
 
 /* func */
-inline int in_int() {int x; cin >> x; return x;}
-inline ll in_ll() {ll x; cin >> x; return x;}
-inline string in_str() {string x; cin >> x; return x;}
+// inline int in_int() {int x; cin >> x; return x;}
+// inline ll in_ll() {ll x; cin >> x; return x;}
+// inline string in_str() {string x; cin >> x; return x;}
 // search_length: 走査するベクトル長の上限(先頭から何要素目までを検索対象とするか、1始まりで)
 template <typename T> inline bool vector_finder(std::vector<T> vec, T element, unsigned int search_length) {
     auto itr = std::find(vec.begin(), vec.end(), element);
@@ -75,5 +75,19 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
+    int n=0,x=0;
+    while(true){
+        int ans =0;
+        cin >> n>>x;
+        if(n==0 && x ==0) break;
+        rep(i,n){
+            reps(k,i+1,n){
+                reps(j,k+1,n){
+                    if(i+k+j+3==x) ++ans;
+                }
+            }
+        }
+        cout << ans <<endl;
+    }
     return 0;
 }

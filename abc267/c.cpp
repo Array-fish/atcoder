@@ -75,5 +75,27 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
+    ll n,m;
+    cin >> n >> m;
+    vl a(n);
+    rep(i,n){
+        cin >> a[i];
+    }
+    ll amax=0,prevsum=0,midsum=0;
+    rep(i,m){
+        amax += a[i]*(i+1);
+    }
+    reps(i,1,m){
+        midsum += a[i];
+    }
+    prevsum = amax;
+    rep(i,n-m){
+        ll nowsum = 0;
+        nowsum = prevsum -a[i]+m*a[m+i] -(midsum);
+        amax = max(amax,nowsum);
+        prevsum = nowsum;
+        midsum = midsum +a[m+i] -a[i+1];
+    }
+    cout << amax << endl;
     return 0;
 }

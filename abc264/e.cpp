@@ -9,9 +9,9 @@ using namespace std;
 // clang-format off
 /* accelration */
 // 高速バイナリ生成
-// #pragma GCC target("avx")
-// #pragma GCC optimize("O3")
-// #pragma GCC optimize("unroll-loops")
+#pragma GCC target("avx")
+#pragma GCC optimize("O3")
+#pragma GCC optimize("unroll-loops")
 // cin cout の結びつけ解除, stdioと同期しない(入出力非同期化)
 // cとstdの入出力を混在させるとバグるので注意
 struct Fast {Fast() {std::cin.tie(0); ios::sync_with_stdio(false);}} fast;
@@ -75,5 +75,15 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
+    int n,m,e;
+    vector<pii> uv(e);
+    rep(i,e){
+        cin >> uv[i].first >> uv[i].second;
+    }
+    int q;
+    cin >> q;
+    vi x(q);
+    rep(i,q) cin >> x[i];
+    
     return 0;
 }

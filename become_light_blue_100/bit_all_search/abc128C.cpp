@@ -75,5 +75,19 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
+    int n,m;
+    cin >>n>>m;
+    vvi conn_swi(m);
+    rep(i,m){
+        int swi_num = in_int();
+        vi cs(swi_num);
+        rep(k,swi_num){
+            cin >> cs[k];
+        }
+    }
+    vi swi_cond(m);
+    rep(i,m){
+        cin >> swi_cond[i];
+    }
     return 0;
 }

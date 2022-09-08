@@ -27,6 +27,7 @@ using vvl = vector<vl>;
 using vvll = vector<vll>;
 using vs = vector<string>;
 using pii = pair<int, int>;
+using pll = pair<ll,ll>;
 
 /* define short */
 #define pb push_back
@@ -75,5 +76,27 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
+    int n = in_int();
+    vector<pll> po(n);
+    vll first_po(n), second_po(n);
+    rep(i,n){
+        cin >>po[i].first >>po[i].second;
+        if(po[i].first > po[i].second) swap(po[i].first, po[i].second);
+        first_po[i] = po[i].first;
+        second_po[i] = po[i].second;
+    }
+    sort(first_po.begin(),first_po.end());
+    sort(second_po.begin(),second_po.end());
+    int in_po = first_po[n/2], out_po = second_po[n/2];
+    ll ans=0;
+    rep(i,n){
+        ans+= abs(po[i].first - in_po);
+        ans += abs(po[i].second - po[i].first);
+        ans += abs(out_po - po[i].second);
+    }
+    cout << ans <<endl;
+
+    
+
     return 0;
 }

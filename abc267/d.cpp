@@ -27,6 +27,7 @@ using vvl = vector<vl>;
 using vvll = vector<vll>;
 using vs = vector<string>;
 using pii = pair<int, int>;
+using pll = pair<ll, ll>;
 
 /* define short */
 #define pb push_back
@@ -75,5 +76,40 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
+    ll n, m;
+    cin >> n >> m;
+    vl a(n);
+    rep(i, n) { cin >> a[i]; }
+    vll dp(m + 1, 0);
+    ll amax = 0, asum = 0;
+    vector<pll> val_idx(m);
+    vll use_idx(m);
+    rep(i, m) {
+        amax += a[i] * (i + 1);
+        asum += a[i];
+        val_idx[i].first = a[i];
+        val_idx[i].second = i;
+        use_idx[i]=i;
+    }
+    sort(val_idx.begin(), val_idx.end());
+    rep(i, n-m) {
+        ll idx = i + 1;
+        // m+idxまででの最大を調べる
+        // m+idx番目を入れた場合の最大を求める
+        // TODO: 多分だけど、削除する値はそのインデックスの分だけマイナスする値が大きくなる。そこを見失っている。
+        ll now_max=0;
+        vector<pll> now_val_idx = val_idx;
+        now_max = amax + m * a[m + idx - 1];
+        reps(k, val_idx[0].second, m) { now_max -= a[use_idx[k]]; }
+        if (now_max > amax) {
+            now_val_idx.erase(now_val_idx.begin());
+            now_val_idx.pb(mp(a[m-1 + idx], m-1 + idx));
+            sort(val_idx.begin(), val_idx.end());
+            use_idx.erase(use_idx.begin());
+            use_idx.push_back(m-1+idx);
+            amax = now_max;
+        }
+    }
+    cout << amax <<endl;
     return 0;
 }
