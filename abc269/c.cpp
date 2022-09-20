@@ -74,37 +74,23 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 // clang-format on
 
 int main() {
-    // code
-    int n,m;
-    cin >>n>>m;
-    vvi conn_swi(m);
-    rep(i,m){
-        int swi_num = in_int();
-        vi cs(swi_num);
-        rep(k,swi_num){
-            cin >> cs[k];
+    ll n;
+    cin >>n;
+    vll one_digit;
+    rep(i,round(log2(n)+1)){
+        if(1LL << i & n){
+            one_digit.pb(i);
         }
-        conn_swi[i] = cs;
     }
-    vi swi_cond(m);
-    rep(i,m){
-        cin >> swi_cond[i];
-    }
-    int ans=0;
-    rep(now_cond,round(pow(2,n))){
-        bool is_all_on=true;
-        rep(li,m){
-            int on_num = 0;
-            rep(sw,conn_swi[li].size()){
-                if(1 << (conn_swi[li][sw]-1) & now_cond){++on_num;}
-            }
-            if(on_num % 2 != swi_cond[li]){
-                is_all_on = false;
-                break;
+    rep(bit,round(pow(2LL,one_digit.size()))){
+        ll pri = 0;
+        rep(i,one_digit.size()){
+            if(1LL << i & bit){
+                pri += round(pow(2LL,one_digit[i]));
             }
         }
-        if(is_all_on) ++ans;
+        print(pri);
     }
-    cout << ans <<endl;
+    
     return 0;
 }

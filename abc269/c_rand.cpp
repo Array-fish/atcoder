@@ -72,39 +72,30 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 // template <typename T> T gcd(T a, T b) {if (b == 0)return a; else return gcd(b, a % b);}
 // template <typename T> inline T lcm(T a, T b) {return (a * b) / gcd(a, b);}
 // clang-format on
+vll myans(ll n){
+    vll one_digit;
+    vll ans;
+    rep(i, round(log2(n) + 1)) {
+        if (1LL << i & n) {
+            one_digit.pb(i);
+        }
+    }
+    rep(bit, round(pow(2LL, one_digit.size()))) {
+        ll pri = 0;
+        rep(i, one_digit.size()) {
+            if (1LL << i & bit) {
+                pri += round(pow(2LL, one_digit[i]));
+            }
+        }
+        ans.pb(pri);
+    }
+    return ans;
+}
+vll colans(ll n){
 
+}
 int main() {
     // code
-    int n,m;
-    cin >>n>>m;
-    vvi conn_swi(m);
-    rep(i,m){
-        int swi_num = in_int();
-        vi cs(swi_num);
-        rep(k,swi_num){
-            cin >> cs[k];
-        }
-        conn_swi[i] = cs;
-    }
-    vi swi_cond(m);
-    rep(i,m){
-        cin >> swi_cond[i];
-    }
-    int ans=0;
-    rep(now_cond,round(pow(2,n))){
-        bool is_all_on=true;
-        rep(li,m){
-            int on_num = 0;
-            rep(sw,conn_swi[li].size()){
-                if(1 << (conn_swi[li][sw]-1) & now_cond){++on_num;}
-            }
-            if(on_num % 2 != swi_cond[li]){
-                is_all_on = false;
-                break;
-            }
-        }
-        if(is_all_on) ++ans;
-    }
-    cout << ans <<endl;
+    int rand = randint(0,59);
     return 0;
 }

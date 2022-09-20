@@ -75,36 +75,38 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
-    int n,m;
-    cin >>n>>m;
-    vvi conn_swi(m);
-    rep(i,m){
-        int swi_num = in_int();
-        vi cs(swi_num);
-        rep(k,swi_num){
-            cin >> cs[k];
+    int n, k;
+    cin >> n >> k;
+    // n = 15;
+    // k = 15;
+    vll hei(n);
+    rep(i, n) {
+        cin >> hei[i];
+        // hei[i] = 1e9;
+    }
+    ll ans = numeric_limits<ll>::max();
+    // 一番左以外でbit全探索
+    rep(bit, round(pow(2, n - 1))) {
+        vi use_bil{0};
+        rep(i, n - 1) {
+            if (1 << i & bit) use_bil.pb(i + 1);
         }
-        conn_swi[i] = cs;
-    }
-    vi swi_cond(m);
-    rep(i,m){
-        cin >> swi_cond[i];
-    }
-    int ans=0;
-    rep(now_cond,round(pow(2,n))){
-        bool is_all_on=true;
-        rep(li,m){
-            int on_num = 0;
-            rep(sw,conn_swi[li].size()){
-                if(1 << (conn_swi[li][sw]-1) & now_cond){++on_num;}
-            }
-            if(on_num % 2 != swi_cond[li]){
-                is_all_on = false;
-                break;
-            }
+        if (k != use_bil.size()) {
+            continue;
         }
-        if(is_all_on) ++ans;
+        ll tmp_ans = 0;
+        ll prev_hei = hei[0];
+        reps(i, 1, n) {
+            if (1 << (i-1) & bit) {
+                if(prev_hei >= hei[i]) {
+                    tmp_ans += prev_hei - hei[i] + 1;
+                    ++prev_hei;
+                }
+            }
+            prev_hei = max(prev_hei, hei[i]);
+        }
+        ans = min(ans, tmp_ans);
     }
-    cout << ans <<endl;
+    print(ans);
     return 0;
 }

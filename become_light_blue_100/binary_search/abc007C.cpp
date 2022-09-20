@@ -75,36 +75,23 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
-    int n,m;
-    cin >>n>>m;
-    vvi conn_swi(m);
-    rep(i,m){
-        int swi_num = in_int();
-        vi cs(swi_num);
-        rep(k,swi_num){
-            cin >> cs[k];
-        }
-        conn_swi[i] = cs;
+    int n;
+    cin >>n;
+    vector<vll> abc(3,vll(n));
+    rep(i,n){cin >> abc[0][i];}
+    rep(i, n) { cin >> abc[1][i]; }
+    rep(i, n) { cin >> abc[2][i]; }
+    rep(i,3){ sort(abc[i].begin(), abc[i].end());}
+    // 2段目のうしろから候補の数を累積させる
+    vector<vll> abc01(2,vll(n+1,0));
+    repd(i,n){
+        abc01[1][i] = distance(upper_bound(abc[2].begin(),abc[2].end(),abc[1][i]),abc[2].end())+abc01[1][i+1];
     }
-    vi swi_cond(m);
-    rep(i,m){
-        cin >> swi_cond[i];
+    // rep(i,2)
+    // 1段目では2段目の累積地をもとにその値の時の候補の数を入れる。
+    rep(i,n){
+        abc01[0][i] = abc01[1][distance(abc[1].begin(),upper_bound(abc[1].begin(), abc[1].end(),abc[0][i]))];
     }
-    int ans=0;
-    rep(now_cond,round(pow(2,n))){
-        bool is_all_on=true;
-        rep(li,m){
-            int on_num = 0;
-            rep(sw,conn_swi[li].size()){
-                if(1 << (conn_swi[li][sw]-1) & now_cond){++on_num;}
-            }
-            if(on_num % 2 != swi_cond[li]){
-                is_all_on = false;
-                break;
-            }
-        }
-        if(is_all_on) ++ans;
-    }
-    cout << ans <<endl;
+    cout << accumulate(abc01[0].begin(),abc01[0].end(),0LL) << endl;
     return 0;
 }

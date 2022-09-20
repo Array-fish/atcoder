@@ -75,36 +75,30 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
-    int n,m;
-    cin >>n>>m;
-    vvi conn_swi(m);
-    rep(i,m){
-        int swi_num = in_int();
-        vi cs(swi_num);
-        rep(k,swi_num){
-            cin >> cs[k];
-        }
-        conn_swi[i] = cs;
+    int r, c;
+    cin >> r >> c;
+    vector<vector<bool>> rice(r, vector<bool>(c, false));
+    rep(rr, r) {
+        rep(cc, c) { rice[rr][cc] = in_int(); }
     }
-    vi swi_cond(m);
-    rep(i,m){
-        cin >> swi_cond[i];
-    }
-    int ans=0;
-    rep(now_cond,round(pow(2,n))){
-        bool is_all_on=true;
-        rep(li,m){
-            int on_num = 0;
-            rep(sw,conn_swi[li].size()){
-                if(1 << (conn_swi[li][sw]-1) & now_cond){++on_num;}
-            }
-            if(on_num % 2 != swi_cond[li]){
-                is_all_on = false;
-                break;
+    int ans = 0;
+    rep(bit, round(pow(2, r))) {
+        vector<vector<bool>> now_rice = rice;
+        rep(rr, r) {
+            if (1 << rr & bit) {
+                rep(cc, c) { now_rice[rr][cc] = !now_rice[rr][cc]; }
             }
         }
-        if(is_all_on) ++ans;
+        int now_ans=0;
+        rep(cc, c) {
+            int c_cnt = 0;
+            rep(rr, r) {
+                if (now_rice[rr][cc]) ++c_cnt;
+            }
+            now_ans += max(c_cnt, r - c_cnt);
+        }
+        ans = max(ans,now_ans);
     }
-    cout << ans <<endl;
+    print(ans);
     return 0;
 }

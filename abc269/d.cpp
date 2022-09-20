@@ -72,39 +72,36 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 // template <typename T> T gcd(T a, T b) {if (b == 0)return a; else return gcd(b, a % b);}
 // template <typename T> inline T lcm(T a, T b) {return (a * b) / gcd(a, b);}
 // clang-format on
-
+int vec6[6][2] = {{-1, -1}, {-1, 0}, {0, -1}, {0, 1}, {1, 0}, {1, 1}};
+int field[2005][2005] = {}, ok[2005][2005] = {};
+int n, ans = 0;
+void sol(int i, int k) {
+    if (field[i + 1000][k + 1000] == 1 && ok[i + 1000][k + 1000] == 0) {
+        // cout << "i: "<< i + 1000<<", k: "<<k+ 1000<<endl;
+        ok[i + 1000][k + 1000] = 1;
+        rep(ii, 6) {
+            // cout << "i: "<< i + vec6[ii][0]<<", k: "<<k+ vec6[ii][1]<<"ii: " <<ii<<endl;
+            sol(i + vec6[ii][0], k + vec6[ii][1]);
+        }
+    }
+}
 int main() {
     // code
-    int n,m;
-    cin >>n>>m;
-    vvi conn_swi(m);
-    rep(i,m){
-        int swi_num = in_int();
-        vi cs(swi_num);
-        rep(k,swi_num){
-            cin >> cs[k];
-        }
-        conn_swi[i] = cs;
+    cin >> n;
+    rep(i, n) {
+        int x, y;
+        cin >> x >> y;
+        field[x + 1000][y + 1000] = 1;
     }
-    vi swi_cond(m);
-    rep(i,m){
-        cin >> swi_cond[i];
-    }
-    int ans=0;
-    rep(now_cond,round(pow(2,n))){
-        bool is_all_on=true;
-        rep(li,m){
-            int on_num = 0;
-            rep(sw,conn_swi[li].size()){
-                if(1 << (conn_swi[li][sw]-1) & now_cond){++on_num;}
-            }
-            if(on_num % 2 != swi_cond[li]){
-                is_all_on = false;
-                break;
+    reps(i,-1000,1000+1) {
+        reps(k, -1000,1000 + 1) {
+            // if(i==-2 && k==-5) print(i);
+            if (ok[i + 1000][k + 1000] == 0 && field[i + 1000][k + 1000] == 1) {
+                ++ans;
+                sol(i, k);
             }
         }
-        if(is_all_on) ++ans;
     }
-    cout << ans <<endl;
+    print(ans);
     return 0;
 }

@@ -96,10 +96,10 @@ int main() {
         ll idx = i + 1;
         // m+idxまででの最大を調べる
         // m+idx番目を入れた場合の最大を求める
-        // TODO: 多分だけど、削除する値はそのインデックスの分だけマイナスする値が大きくなる。そこを見失っている。
         ll now_max=0;
         vector<pll> now_val_idx = val_idx;
         now_max = amax + m * a[m + idx - 1];
+        // TODO: 多分だけど、削除する値はそのインデックスの分だけマイナスする値が大きくなる。そこを見失っている。
         reps(k, val_idx[0].second, m) { now_max -= a[use_idx[k]]; }
         if (now_max > amax) {
             now_val_idx.erase(now_val_idx.begin());

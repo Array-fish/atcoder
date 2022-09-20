@@ -75,36 +75,20 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 
 int main() {
     // code
-    int n,m;
-    cin >>n>>m;
-    vvi conn_swi(m);
-    rep(i,m){
-        int swi_num = in_int();
-        vi cs(swi_num);
-        rep(k,swi_num){
-            cin >> cs[k];
-        }
-        conn_swi[i] = cs;
-    }
-    vi swi_cond(m);
-    rep(i,m){
-        cin >> swi_cond[i];
-    }
-    int ans=0;
-    rep(now_cond,round(pow(2,n))){
-        bool is_all_on=true;
-        rep(li,m){
-            int on_num = 0;
-            rep(sw,conn_swi[li].size()){
-                if(1 << (conn_swi[li][sw]-1) & now_cond){++on_num;}
-            }
-            if(on_num % 2 != swi_cond[li]){
-                is_all_on = false;
-                break;
+    vector<string> strs(10);
+    rep(i, 10) { cin >> strs[i]; }
+    int a=11, b=-1, c=11, d=-1;
+    rep(i, 10) {
+        rep(k, 10) {
+            if (strs[i][k] == '#') {
+                a = min(a, (int)i);
+                b = max(b, (int)i);
+                c = min(c,(int)k);
+                d = max(d,(int)k);
             }
         }
-        if(is_all_on) ++ans;
     }
-    cout << ans <<endl;
+    cout << a+1<<" "<<b+1<<endl;
+    cout << c+1<<" "<<d+1 <<endl;
     return 0;
 }

@@ -74,37 +74,47 @@ template <typename T> inline bool chmax(T& a, const T& b) {bool compare = a < b;
 // clang-format on
 
 int main() {
-    // code
-    int n,m;
-    cin >>n>>m;
-    vvi conn_swi(m);
-    rep(i,m){
-        int swi_num = in_int();
-        vi cs(swi_num);
-        rep(k,swi_num){
-            cin >> cs[k];
-        }
-        conn_swi[i] = cs;
+    int n, m;
+    cin >> n >> m;
+    vector<pii> conn(m);
+    rep(i, m) { cin >> conn[i].first >> conn[i].second; }
+    vvi per_conn(n);
+    rep(i, m) {
+        per_conn[conn[i].first - 1].pb(conn[i].second - 1);
+        per_conn[conn[i].second - 1].pb(conn[i].first - 1);
     }
-    vi swi_cond(m);
-    rep(i,m){
-        cin >> swi_cond[i];
-    }
-    int ans=0;
-    rep(now_cond,round(pow(2,n))){
-        bool is_all_on=true;
-        rep(li,m){
-            int on_num = 0;
-            rep(sw,conn_swi[li].size()){
-                if(1 << (conn_swi[li][sw]-1) & now_cond){++on_num;}
-            }
-            if(on_num % 2 != swi_cond[li]){
-                is_all_on = false;
-                break;
+    rep(i, n) { sort(per_conn[i].begin(), per_conn[i].end()); }
+    int ans = 0;
+    rep(bit, round(pow(2, n))) {
+        vi tmp_conn;
+
+        rep(i, n) {
+            if (1 << i & bit) {
+                tmp_conn.pb(i);
             }
         }
-        if(is_all_on) ++ans;
+        // if(tmp_conn == vi{3,4,5,6}){
+        //     print("now");
+        // }
+        bool is_all_in = true;
+        rep(i, tmp_conn.size()) {
+            reps(k, i + 1, tmp_conn.size()) {
+                bool is_i_have_k = false;
+                rep(j, per_conn[tmp_conn[i]].size()) {
+                    if (per_conn[tmp_conn[i]][j] == tmp_conn[k]) {
+                        is_i_have_k = true;
+                        break;
+                    }
+                }
+                if (!is_i_have_k) {
+                    is_all_in = false;
+                    break;
+                }
+            }
+            if(!is_all_in) break;
+        }
+        if (is_all_in) ans = max(ans, static_cast<int>(tmp_conn.size()));
     }
-    cout << ans <<endl;
+    cout << ans << endl;
     return 0;
 }
