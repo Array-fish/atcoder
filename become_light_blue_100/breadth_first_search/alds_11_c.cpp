@@ -1,8 +1,8 @@
 /**
  *    author:  USERNAME
  *    create-mm-dd hh:mm:ss
- * 添え字ミスでめっちゃ時間がかかった。
- * for文の添え字について法則性を決めたほうが良い最後にiを付けるとか,i,j,k,...の順番で使うとか。
+ * 通過済みマップをどっかで持たないときつい。
+ * 隣接リストであらわされている時で有向グラフの時は処理をする
  **/
 
 #include <bits/stdc++.h>
@@ -92,52 +92,45 @@ inline bool chmax(T& a, const T& b) {
 // gcd(b, a % b);} template <typename T> inline T lcm(T a, T b) {return (a * b)
 // / gcd(a, b);}
 // clang-format on
-int vec4[4][2] = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
-int vec8[8][2] = {{0, -1}, {1, -1}, {1, 0},  {1, 1},
-                  {0, 1},  {-1, 1}, {-1, 0}, {-1, -1}};
-
-int w, h;
-int field[50][50] = {}, field_checked[50][50] = {};
-void solve(int hi, int wi) {
-    field_checked[hi][wi] = 1;
-    rep(i, 8) {
-        if (0 <= hi + vec8[i][0] && hi + vec8[i][0] < h &&
-            0 <= wi + vec8[i][1] && wi + vec8[i][1] < w) {
-            if (field[hi + vec8[i][0]][wi + vec8[i][1]] &&
-                !field_checked[hi + vec8[i][0]][wi + vec8[i][1]]) {
-                solve(hi + vec8[i][0], wi + vec8[i][1]);
-            }
+void erase_parent(int idx, int parent_idx, vvi& conn) {
+    rep(i, conn[idx].size()) {
+        if (conn[idx][i] == parent_idx) {
+            conn[idx].erase(conn[idx].begin() + i);
+            break;
         }
+    }
+    rep(i, conn[idx].size()) {
+        erase_parent(conn[idx][i], idx, conn);
     }
 }
 int main() {
     // code
-    vi anss;
-    while (1) {
-        // fill(field[0],field[50],0);
-        // fill(field_checked[0],field_checked[50],0);
-        rep(i, 50) {
-            rep(k, 50) {
-                field[i][k] = 0;
-                field_checked[i][k] = 0;
-            }
-        }
-        cin >> w >> h;
-        if (w == 0 && h == 0) break;
-        rep(hh, h) {
-            rep(ww, w) { cin >> field[hh][ww]; }
-        }
-        int ans = 0;
-        rep(hh, h) {
-            rep(ww, w) {
-                if (field[hh][ww] && !field_checked[hh][ww]) {
-                    solve(hh, ww);
-                    ++ans;
-                }
-            }
-        }
-        anss.pb(ans);
+    int n = in_int();
+    vvi conn(n);
+    rep(i, n) {
+        vi aconn;
+        in_int();
+        int m = in_int();
+        rep(i, m) { aconn.pb(in_int() - 1); }
+        conn[i] = aconn;
     }
-    rep(i, anss.size()) { cout << anss[i] << endl; }
+    rep(i,conn[0].size()){
+        erase_parent(conn[0][i],0,conn);
+    }
+    vi ans(n, -1);
+    ans[0] = 0;
+    deque<int> deq;
+    deq.push_back(0);
+    while (deq.size() > 0) {
+        int idx = deq.front();
+        deq.pop_front();
+        rep(i, conn[idx].size()) {
+            if (ans[conn[idx][i]] == -1){
+                ans[conn[idx][i]] = ans[idx] + 1;
+                deq.push_back(conn[idx][i]);
+            }
+        }
+    }
+    rep(i, n) { cout << i + 1 << " " << ans[i] << endl; }
     return 0;
 }
